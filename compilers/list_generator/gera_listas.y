@@ -46,8 +46,7 @@ void imprime_saida( Atributos s1 );
 S : K          { imprime_saida( $1 ); }
   ;
 
-K : E
-  | L
+K : LE
   ;
 
 L : '(' LE ')' { $$ = $2; }
@@ -101,12 +100,22 @@ Atributos gera_ultimo_elemento( Atributos s1 ) {
 }
 
 void imprime_saida( Atributos s1 ) {
-  for( int i = 0; i < numero_de_nos; i++ )
-    cout << "l" << i << " = new Lista();\n";
+  cout << "#include <string> \nusing namespace std;" << endl;
+  cout << "struct Lista { bool sublista; string valorString;" << 
+  " Lista* valorSublista; Lista* proximo;};" << endl;
+  cout << "Lista* geraLista() { // Esse cabeçalho não pode ser alterado." << endl;
+
+  for( int i = 0; i < numero_de_nos; i++ ){
+    cout << "Lista *l" << i << ";" << endl;
+    cout << "l" << i << " = new Lista;\n";
+  }
     
   cout << "\n" + s1.codigo << endl; 
         
-  cout << "Lista *head = " << s1.head << ";" << endl;  
+  cout << "Lista *head = " << s1.head << ";" << endl; 
+
+  cout << "}" ;
+
 }
 
 Atributos gera_lista_vazia() {
