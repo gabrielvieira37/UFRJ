@@ -77,6 +77,10 @@ using namespace std;
 #define YYSTYPE Atributos
 #define mp make_pair
 
+int linha = 1;
+int coluna = 1;
+
+
 typedef string Tipo;
 
 struct Atributos {
@@ -86,21 +90,31 @@ struct Atributos {
   int linha;
 };
 
+map<string,string> ts;
+
+map<string,Tipo> tsVar;
+
 int yylex();
 int yyparse();
 void yyerror(const char *);
 
+queue<pair<string, string> > toDeclare;
+
+void gera_programa( Atributos a );
 string declareVars(Tipo t);
-string geraNomeVar( Tipo t );
+string geraNomeVar(Tipo t);
 string geraNomeBp();
-string declaraTemps();
-Atributos geraCodigoOperador( Atributos a, string op, Atributos b );
 Atributos geraCodigoOperadorUn( string op, Atributos a );
+Atributos geraCodigoOperador( Atributos a, string op, Atributos b );
 
-int linha = 1;
-int coluna = 1;
+int nBp = 0;
+map<Tipo,int> nVar;
 
-map<string,Tipo> tsVar;
+map<Tipo, string> conv = {
+{ "I", "int" }, { "C", "char" }, { "S", "string" }, { "B", "boolean" },
+{ "D", "real"}
+};
+
 map<string,Tipo> resOpr = {
 { "+II", "I" }, { "+ID", "D" }, { "+DI", "D" }, { "+DD", "D" },
 { "+CC", "S" }, { "+CS", "S" }, { "+SC", "S" }, { "+SS", "S" },
@@ -115,27 +129,9 @@ map<string,Tipo> resOpr = {
 { "!II", "I" }, { "!CC", "I" },
 };
 
-map<Tipo, string> conv = {
-{ "I", "int" }, { "C", "char" }, { "S", "string" }, { "B", "boolean" },
-{ "D", "real"}
-};
-
-map<Tipo,int> nVar;
-int nBp = 0;
-queue<pair<string, string> > toDeclare;
-
-string inicio = 
-"#include <iostream>\n"
-"#include <cstring>\n"
-"using namespace std;\n"
-"int main() {\n";
-
-string fim = 
-"return 0;\n"
-"}\n";
 
 
-#line 139 "y.tab.c" /* yacc.c:339  */
+#line 135 "y.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -249,7 +245,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 253 "y.tab.c" /* yacc.c:358  */
+#line 249 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -549,13 +545,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    92,    92,    95,    96,    99,   100,   101,   102,   103,
-     106,   107,   110,   115,   119,   120,   123,   124,   125,   126,
-     127,   130,   133,   134,   138,   139,   143,   146,   147,   148,
-     149,   150,   151,   154,   168,   184,   190,   196,   202,   208,
-     216,   217,   218,   220,   228,   235,   236,   237,   238,   239,
-     240,   241,   242,   243,   244,   245,   246,   247,   248,   249,
-     252,   258,   259,   260,   261,   262,   263,   264,   265
+       0,    89,    89,    92,    93,    96,    97,    98,    99,   100,
+     103,   104,   107,   112,   116,   117,   120,   121,   122,   123,
+     124,   127,   130,   131,   135,   136,   140,   143,   144,   145,
+     146,   147,   148,   151,   165,   181,   187,   193,   199,   205,
+     213,   214,   215,   218,   226,   233,   234,   235,   236,   237,
+     238,   239,   240,   241,   242,   243,   244,   245,   246,   247,
+     250,   256,   257,   258,   259,   260,   261,   262,   263
 };
 #endif
 
@@ -1457,150 +1453,150 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 92 "tipos.y" /* yacc.c:1646  */
-    { cout << inicio << declaraTemps() << (yyvsp[-1]).c << (yyvsp[0]).c << fim << endl; }
-#line 1463 "y.tab.c" /* yacc.c:1646  */
+#line 89 "tipos.y" /* yacc.c:1646  */
+    { (yyval).c = (yyvsp[-1]).c + (yyvsp[0]).c; gera_programa((yyval));}
+#line 1459 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 95 "tipos.y" /* yacc.c:1646  */
+#line 92 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-2]).c + (yyvsp[-1]).c; }
-#line 1469 "y.tab.c" /* yacc.c:1646  */
+#line 1465 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 99 "tipos.y" /* yacc.c:1646  */
+#line 96 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = declareVars("I"); }
-#line 1475 "y.tab.c" /* yacc.c:1646  */
+#line 1471 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 100 "tipos.y" /* yacc.c:1646  */
+#line 97 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = declareVars("C"); }
-#line 1481 "y.tab.c" /* yacc.c:1646  */
+#line 1477 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 101 "tipos.y" /* yacc.c:1646  */
+#line 98 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = declareVars("S"); }
-#line 1487 "y.tab.c" /* yacc.c:1646  */
+#line 1483 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 102 "tipos.y" /* yacc.c:1646  */
+#line 99 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = declareVars("I");  }
-#line 1493 "y.tab.c" /* yacc.c:1646  */
+#line 1489 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 103 "tipos.y" /* yacc.c:1646  */
+#line 100 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = declareVars("D");  }
-#line 1499 "y.tab.c" /* yacc.c:1646  */
+#line 1495 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 106 "tipos.y" /* yacc.c:1646  */
+#line 103 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-2]).c + ", " + (yyvsp[0]).c; (yyvsp[-2]).t = (yyval).t; }
-#line 1505 "y.tab.c" /* yacc.c:1646  */
+#line 1501 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 111 "tipos.y" /* yacc.c:1646  */
+#line 108 "tipos.y" /* yacc.c:1646  */
     {  
         (yyval).c = (yyvsp[-3]).v + "[" + (yyvsp[-1]).v + "]"; (yyvsp[-3]).t = (yyval).t; 
         toDeclare.push(mp((yyvsp[-3]).v, (yyvsp[-1]).v));
       }
-#line 1514 "y.tab.c" /* yacc.c:1646  */
+#line 1510 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 115 "tipos.y" /* yacc.c:1646  */
+#line 112 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).v; (yyvsp[0]).t = (yyval).t; toDeclare.push(mp((yyvsp[0]).v, "")); }
-#line 1520 "y.tab.c" /* yacc.c:1646  */
+#line 1516 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 119 "tipos.y" /* yacc.c:1646  */
+#line 116 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-1]).c + (yyvsp[0]).c; }
-#line 1526 "y.tab.c" /* yacc.c:1646  */
+#line 1522 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 130 "tipos.y" /* yacc.c:1646  */
+#line 127 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).c; }
-#line 1532 "y.tab.c" /* yacc.c:1646  */
+#line 1528 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 133 "tipos.y" /* yacc.c:1646  */
+#line 130 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-2]).c + "cin >> " + (yyvsp[0]).v + ";\n"; }
-#line 1538 "y.tab.c" /* yacc.c:1646  */
+#line 1534 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 135 "tipos.y" /* yacc.c:1646  */
+#line 132 "tipos.y" /* yacc.c:1646  */
     { 
           (yyval).c = (yyvsp[-1]).c + (yyvsp[-5]).c + "cin >> " + (yyvsp[-3]).v + "[" + (yyvsp[-1]).v + "]" + ";\n"; ; 
         }
-#line 1546 "y.tab.c" /* yacc.c:1646  */
+#line 1542 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 138 "tipos.y" /* yacc.c:1646  */
+#line 135 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = "cin >> " + (yyvsp[0]).v + ";\n"; }
-#line 1552 "y.tab.c" /* yacc.c:1646  */
+#line 1548 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 140 "tipos.y" /* yacc.c:1646  */
+#line 137 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-1]).c + "cin >> " + (yyvsp[-3]).v + "[" + (yyvsp[-1]).v + "]" + ";\n"; }
-#line 1558 "y.tab.c" /* yacc.c:1646  */
+#line 1554 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 143 "tipos.y" /* yacc.c:1646  */
+#line 140 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).c; }
-#line 1564 "y.tab.c" /* yacc.c:1646  */
+#line 1560 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 146 "tipos.y" /* yacc.c:1646  */
+#line 143 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-2]).c + "cout << " + (yyvsp[0]).v + ";\n"; }
-#line 1570 "y.tab.c" /* yacc.c:1646  */
+#line 1566 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 147 "tipos.y" /* yacc.c:1646  */
+#line 144 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).c + (yyvsp[-2]).c + "cout << " + (yyvsp[0]).v + ";\n"; }
-#line 1576 "y.tab.c" /* yacc.c:1646  */
+#line 1572 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 148 "tipos.y" /* yacc.c:1646  */
+#line 145 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).c + (yyvsp[-2]).c + "cout << endl;\n"; }
-#line 1582 "y.tab.c" /* yacc.c:1646  */
+#line 1578 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 30:
-#line 149 "tipos.y" /* yacc.c:1646  */
+#line 146 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = "cout << " + (yyvsp[0]).v + ";\n"; }
-#line 1588 "y.tab.c" /* yacc.c:1646  */
+#line 1584 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 150 "tipos.y" /* yacc.c:1646  */
+#line 147 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).c + "cout << " + (yyvsp[0]).v + ";\n"; }
-#line 1594 "y.tab.c" /* yacc.c:1646  */
+#line 1590 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 151 "tipos.y" /* yacc.c:1646  */
+#line 148 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).c + "cout << endl;\n"; }
-#line 1600 "y.tab.c" /* yacc.c:1646  */
+#line 1596 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 155 "tipos.y" /* yacc.c:1646  */
+#line 152 "tipos.y" /* yacc.c:1646  */
     {  
       string cond = geraNomeVar("I");  
       tsVar[cond] = "I";            
@@ -1614,11 +1610,11 @@ yyreduce:
           + "goto " + bp1 + ";\n"
           + bp2 + ":\n";
     }
-#line 1618 "y.tab.c" /* yacc.c:1646  */
+#line 1614 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 169 "tipos.y" /* yacc.c:1646  */
+#line 166 "tipos.y" /* yacc.c:1646  */
     {  
       string cond = geraNomeVar("I");
       tsVar[cond] = "I";       
@@ -1632,79 +1628,79 @@ yyreduce:
           + "goto " + bp1 + ";\n"
           + bp2 + ":\n";
     }
-#line 1636 "y.tab.c" /* yacc.c:1646  */
+#line 1632 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 185 "tipos.y" /* yacc.c:1646  */
+#line 182 "tipos.y" /* yacc.c:1646  */
     {     
       string bp1 = geraNomeBp(), bp2 = geraNomeBp();  
       (yyval).c = (yyvsp[-4]).c + "if (" + (yyvsp[-4]).v + ") goto " + bp1 + ";\n" + (yyvsp[0]).c
         + "goto " + bp2 + ";\n" + bp1 + ":\n" + (yyvsp[-2]).c + bp2 + ":\n";
     }
-#line 1646 "y.tab.c" /* yacc.c:1646  */
+#line 1642 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 191 "tipos.y" /* yacc.c:1646  */
+#line 188 "tipos.y" /* yacc.c:1646  */
     {     
       string bp1 = geraNomeBp(), bp2 = geraNomeBp();  
       (yyval).c = (yyvsp[-5]).c + "if (" + (yyvsp[-5]).v + ") goto " + bp1 + ";\n" + (yyvsp[-1]).c
         + "goto " + bp2 + ";\n" + bp1 + ":\n" + (yyvsp[-3]).c + bp2 + ":\n";
     }
-#line 1656 "y.tab.c" /* yacc.c:1646  */
+#line 1652 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 197 "tipos.y" /* yacc.c:1646  */
+#line 194 "tipos.y" /* yacc.c:1646  */
     {     
       string bp1 = geraNomeBp(), bp2 = geraNomeBp();  
       (yyval).c = (yyvsp[-5]).c + "if (" + (yyvsp[-5]).v + ") goto " + bp1 + ";\n" + (yyvsp[-1]).c
         + "goto " + bp2 + ";\n" + bp1 + ":\n" + (yyvsp[-3]).c + bp2 + ":\n";
     }
-#line 1666 "y.tab.c" /* yacc.c:1646  */
+#line 1662 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 203 "tipos.y" /* yacc.c:1646  */
+#line 200 "tipos.y" /* yacc.c:1646  */
     {
        string bp1 = geraNomeBp();  
        (yyval).c = (yyvsp[-2]).c + (yyvsp[-2]).v + " = !" + (yyvsp[-2]).v + ";\nif (" + (yyvsp[-2]).v + ") goto " 
        + bp1 + ";\n" + (yyvsp[0]).c + bp1 + ":\n";
     }
-#line 1676 "y.tab.c" /* yacc.c:1646  */
+#line 1672 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 209 "tipos.y" /* yacc.c:1646  */
+#line 206 "tipos.y" /* yacc.c:1646  */
     {
        string bp1 = geraNomeBp();  
        (yyval).c = (yyvsp[-3]).c + (yyvsp[-3]).v + " = !" + (yyvsp[-3]).v + ";\nif (" + (yyvsp[-3]).v + ") goto " 
        + bp1 + ";\n" + (yyvsp[-1]).c + bp1 + ":\n";
     }
-#line 1686 "y.tab.c" /* yacc.c:1646  */
+#line 1682 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 216 "tipos.y" /* yacc.c:1646  */
+#line 213 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-1]).c ; }
-#line 1692 "y.tab.c" /* yacc.c:1646  */
+#line 1688 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 217 "tipos.y" /* yacc.c:1646  */
+#line 214 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = "\n"; }
-#line 1698 "y.tab.c" /* yacc.c:1646  */
+#line 1694 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 42:
-#line 218 "tipos.y" /* yacc.c:1646  */
+#line 215 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[0]).c; }
-#line 1704 "y.tab.c" /* yacc.c:1646  */
+#line 1700 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 221 "tipos.y" /* yacc.c:1646  */
+#line 219 "tipos.y" /* yacc.c:1646  */
     { (yyval).v = (yyvsp[0]).v;
         if (tsVar[(yyvsp[-2]).v] == "S"){
           (yyval).c = (yyvsp[0]).c + "strcpy(" + (yyvsp[-2]).v + "," + (yyvsp[0]).v + ");\n";
@@ -1712,162 +1708,162 @@ yyreduce:
           (yyval).c = (yyvsp[0]).c + (yyvsp[-2]).v + " = " + (yyvsp[0]).v + ";\n";
         }
       }
-#line 1716 "y.tab.c" /* yacc.c:1646  */
+#line 1712 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 229 "tipos.y" /* yacc.c:1646  */
+#line 227 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = (yyvsp[-3]).c + (yyvsp[0]).c 
              + (yyvsp[-5]).v + "[" + (yyvsp[-3]).v + "] = " + (yyvsp[0]).v + ";\n";
         (yyval).v = (yyvsp[0]).v;
       }
-#line 1725 "y.tab.c" /* yacc.c:1646  */
+#line 1721 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 235 "tipos.y" /* yacc.c:1646  */
+#line 233 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1731 "y.tab.c" /* yacc.c:1646  */
+#line 1727 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 236 "tipos.y" /* yacc.c:1646  */
+#line 234 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1737 "y.tab.c" /* yacc.c:1646  */
+#line 1733 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 237 "tipos.y" /* yacc.c:1646  */
+#line 235 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1743 "y.tab.c" /* yacc.c:1646  */
+#line 1739 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 238 "tipos.y" /* yacc.c:1646  */
+#line 236 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1749 "y.tab.c" /* yacc.c:1646  */
+#line 1745 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 239 "tipos.y" /* yacc.c:1646  */
+#line 237 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1755 "y.tab.c" /* yacc.c:1646  */
+#line 1751 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 240 "tipos.y" /* yacc.c:1646  */
+#line 238 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1761 "y.tab.c" /* yacc.c:1646  */
+#line 1757 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 241 "tipos.y" /* yacc.c:1646  */
+#line 239 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1767 "y.tab.c" /* yacc.c:1646  */
+#line 1763 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 242 "tipos.y" /* yacc.c:1646  */
+#line 240 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1773 "y.tab.c" /* yacc.c:1646  */
+#line 1769 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 243 "tipos.y" /* yacc.c:1646  */
+#line 241 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1779 "y.tab.c" /* yacc.c:1646  */
+#line 1775 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 244 "tipos.y" /* yacc.c:1646  */
+#line 242 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), (yyvsp[-1]).v, (yyvsp[0])); }
-#line 1785 "y.tab.c" /* yacc.c:1646  */
+#line 1781 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 245 "tipos.y" /* yacc.c:1646  */
+#line 243 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), "!=", (yyvsp[0])); }
-#line 1791 "y.tab.c" /* yacc.c:1646  */
+#line 1787 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 246 "tipos.y" /* yacc.c:1646  */
+#line 244 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), "&&", (yyvsp[0])); }
-#line 1797 "y.tab.c" /* yacc.c:1646  */
+#line 1793 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 247 "tipos.y" /* yacc.c:1646  */
+#line 245 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperador( (yyvsp[-2]), "||", (yyvsp[0])); }
-#line 1803 "y.tab.c" /* yacc.c:1646  */
+#line 1799 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 248 "tipos.y" /* yacc.c:1646  */
+#line 246 "tipos.y" /* yacc.c:1646  */
     { (yyval) = geraCodigoOperadorUn( "!", (yyvsp[0])); }
-#line 1809 "y.tab.c" /* yacc.c:1646  */
+#line 1805 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 253 "tipos.y" /* yacc.c:1646  */
+#line 251 "tipos.y" /* yacc.c:1646  */
     { 
       (yyval).v = geraNomeVar("I");
       (yyval).c = (yyvsp[-1]).c + (yyval).v + " = " + (yyvsp[-3]).v + "[" + (yyvsp[-1]).v + "];\n"; 
       (yyval).t = tsVar[(yyvsp[-3]).v];                
     }
-#line 1819 "y.tab.c" /* yacc.c:1646  */
+#line 1815 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 258 "tipos.y" /* yacc.c:1646  */
+#line 256 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = ""; (yyval).v = (yyvsp[0]).v; (yyval).t = tsVar[(yyvsp[0]).v]; }
-#line 1825 "y.tab.c" /* yacc.c:1646  */
+#line 1821 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 259 "tipos.y" /* yacc.c:1646  */
+#line 257 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = ""; (yyval).v = (yyvsp[0]).v; (yyval).t = "I"; }
-#line 1831 "y.tab.c" /* yacc.c:1646  */
+#line 1827 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 260 "tipos.y" /* yacc.c:1646  */
+#line 258 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = ""; (yyval).v = (yyvsp[0]).v; (yyval).t = "D"; }
-#line 1837 "y.tab.c" /* yacc.c:1646  */
+#line 1833 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 261 "tipos.y" /* yacc.c:1646  */
+#line 259 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = ""; (yyval).v = (yyvsp[0]).v; (yyval).t = "S"; }
-#line 1843 "y.tab.c" /* yacc.c:1646  */
+#line 1839 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 262 "tipos.y" /* yacc.c:1646  */
+#line 260 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = ""; (yyval).v = (yyvsp[0]).v; (yyval).t = "C"; }
-#line 1849 "y.tab.c" /* yacc.c:1646  */
+#line 1845 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 263 "tipos.y" /* yacc.c:1646  */
+#line 261 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = ""; (yyval).v = "1"; (yyval).t = "I"; }
-#line 1855 "y.tab.c" /* yacc.c:1646  */
+#line 1851 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 264 "tipos.y" /* yacc.c:1646  */
+#line 262 "tipos.y" /* yacc.c:1646  */
     { (yyval).c = ""; (yyval).v = "0"; (yyval).t = "I"; }
-#line 1861 "y.tab.c" /* yacc.c:1646  */
+#line 1857 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 265 "tipos.y" /* yacc.c:1646  */
+#line 263 "tipos.y" /* yacc.c:1646  */
     { (yyval) = (yyvsp[-1]); }
-#line 1867 "y.tab.c" /* yacc.c:1646  */
+#line 1863 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1871 "y.tab.c" /* yacc.c:1646  */
+#line 1867 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2095,16 +2091,22 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 268 "tipos.y" /* yacc.c:1906  */
+#line 266 "tipos.y" /* yacc.c:1906  */
 
 
 #include "lex.yy.c"
 
-void yyerror( const char* st ) {
-   puts( st ); 
-   printf( "Linha %d, coluna %d, proximo a: %s\n", linha, coluna, yytext );
-   exit( 0 );
-}
+string cabecalho = 
+"#include <iostream>\n"
+"#include <stdio.h>\n"
+"#include <string.h>\n"
+"#include <cstring>\n\n" 
+"using namespace std;\n\n"
+"int main() {\n";
+
+string fim_programa = 
+"return 0;\n"
+"}\n";
 
 string declareVars(Tipo t){
   string ret = "";
@@ -2117,13 +2119,57 @@ string declareVars(Tipo t){
     else if (t == "S") ret += "char " + x.first + "[257]";
     else if (t == "D") ret += "double " + x.first;
 
-    //if (x.second != "")  ret += "[" + x.second + "]";
-
     ret += ";\n";
     toDeclare.pop();
   }  
   return ret;
 }
+
+
+void yyerror( const char* st ) {
+   puts( st ); 
+   printf( "Linha %d, coluna %d, proximo a: %s\n", linha, coluna, yytext );
+   exit( 0 );
+}
+
+string declara_variaveis() {
+  string saida;
+  
+  for( auto p : ts )
+      saida += p.second;
+
+  return saida;
+}
+
+string geraNomeVar(Tipo t) {
+  string aux = "";
+  string name_type = conv[t] ;
+
+  if (t == "S") { aux = "[257]"; name_type = "char";}
+
+  if (t == "D") name_type = "double";
+
+  string nome = "t_" + name_type + "_" + to_string( nVar[t]++ );
+
+  ts[nome] = name_type + " " + nome + aux + ";\n";
+
+  return nome;
+}
+
+string geraNomeBp() {
+  char buf[20] = "";  
+  sprintf( buf, "bp%d", nBp++ );  
+  return buf;
+}
+
+void gera_programa( Atributos a ) {
+  cout << cabecalho 
+       << declara_variaveis()
+       << a.c
+       << fim_programa
+       << endl;
+}
+
 
 Tipo buscaTipoOperacao( Tipo a, string op, Tipo b ) {
   if (op == ">" || op == "<" || op == ">=" || op == "<=" || op == "==" || op == "!="
@@ -2137,26 +2183,24 @@ Tipo buscaTipoOperacao( Tipo a, string op, Tipo b ) {
       if (a == "C" && b == "S") return "I";
   }
   return resOpr[op + a + b];
-
-  // TODO: usar o find. Perda de performance de 1e-9 s
 }
+
 
 Atributos geraCodigoOperador( Atributos a, string op, Atributos b ) {
   Atributos r;
   if (a.t.empty()) { a.t = tsVar[a.v];}
   if (b.t.empty()) { b.t = tsVar[b.v];}
-  //cout << "comparando " << a.t << " e " << b.t << endl;
 
+  
   r.t = buscaTipoOperacao( a.t, op, b.t );
   if( r.t == "" ) {
     string temp = "Operacao '" + op + "' inválida entre " + conv[a.t] + " e " + conv[b.t]; 
     yyerror( temp.c_str() );
-  }
+  } 
   
   r.c = a.c + b.c;
   r.v = geraNomeVar( r.t );
   tsVar[r.v] = r.t;
-  //cout << "gerei " << a.t << " " << b.t << " " << r.t << endl;
   
   if ( (a.t == "S" || b.t == "S" || (a.t == "C" && b.t == "C")) && 
   (op == "+" || op == ">" || op == "<" || op == ">=" || op == "<=" || op == "==" || op == "!=")){
@@ -2184,7 +2228,6 @@ Atributos geraCodigoOperador( Atributos a, string op, Atributos b ) {
         r.c += "strncat(" + r.v + ", " + b.v + ", 256);\n"; 
       }
     } else {
-      // cuidado como char char aqui
       
       string v1 = a.v, v2 = b.v;
 
@@ -2240,64 +2283,6 @@ Atributos geraCodigoOperadorUn( string op, Atributos a ) {
   r.v = geraNomeVar( r.t );
   r.c = a.c + r.v + " = !" + a.v + ";\n";
   return r;
-}
-
-string toString( int n ) {
-  char buf[20] = "";
-  
-  sprintf( buf, "%d", n );
-  
-  return buf;
-}
-
-string geraNomeVar( Tipo t ) {
-  return "t_" + t + "_" + toString( nVar[t]++ );
-}
-
-string geraNomeBp() {
-  char buf[20] = "";  
-  sprintf( buf, "bp%d", nBp++ );  
-  return buf;
-}
-
-string declaraTemps() {
-  string res;
-/*
-  cout << tsVar.size() << endl;
-  for( auto p : tsVar ) {
-    cout << p.first << " " << p.second << endl;
-  } */
-
-  for( auto p : nVar ) 
-    for( int i = 0; i < p.second; i ++ ) {
-
-      string nomeTipo;
-      if( p.first == "I")
-        nomeTipo = "int";
-      else if( p.first == "D" )
-        nomeTipo = "double";
-      else if( p.first == "C" || p.first == "S" )
-        nomeTipo = "char";
-        
-      string aux = "";
-      if (p.first == "S") aux = "[257]";
-
-      res += nomeTipo + " t_" + p.first + "_" + toString( i ) + aux + ";\n";
-
-     }
-
-  return res;
-}
-
-void teste_GeraCodigoOperador() {
-  Atributos a = { "a", "", "D", 1 },
-            b = { geraNomeVar( "I" ), "  t0 = 2 * 6;\n", "D", 1 };
-  
-  Atributos r = geraCodigoOperador( a, "+", b );
-  
-  cout << r.t << endl;
-  cout << r.v << endl;
-  cout << r.c << endl;
 }
 
 int main( int argc, char* st[]) {

@@ -4,9 +4,9 @@ int token( int );
 DIGITO  [0-9]
 LETRA   [A-Za-z_]
 INT     {DIGITO}+
-REAL    {DIGITO}+("."{DIGITO}+)?
+REAL    {INT}("."{INT})?([Ee]("+"|"-")?{INT})?
 ID      {LETRA}({LETRA}|{DIGITO})*
-STR     (\"([^"]|\\\")*\")
+STRING  (\"([^\"]|\"\"|\\\")*\")
 CHAR    (\'.\')
 
 %%
@@ -17,7 +17,7 @@ CHAR    (\'.\')
 
 {INT} 	   { return token( CINT ); }
 {REAL}     { return token( CREAL ); }
-{STR}      { return token( CSTR ); }
+{STRING}   { return token( CSTR ); }
 {CHAR}     { return token( CCHAR ); }
 
 "boolean"  { return token( TK_BOOLEAN ); }
@@ -45,19 +45,15 @@ CHAR    (\'.\')
 "endl"     { return token( TK_ENDL); }
 "begin"    { return token( TK_BEGIN ); }
 "end"      { return token( TK_END ); }
-"true"     { return token( TK_TRUE ); }
-"false"    { return token( TK_FALSE ); }
 
 {ID}       { return token( TK_ID ); }
-
 .          { return token( *yytext ); }
 
 %%
-
 int token( int tk ) {
- yylval.v = yytext; 
- coluna += strlen(yytext); 
+ yylval.v = yytext;
+ coluna += strlen(yytext);
+ yylval.linha = linha;
+ yylval.c = "";
  return tk;
 }
-
-int yywrap (void) {return 1;}
