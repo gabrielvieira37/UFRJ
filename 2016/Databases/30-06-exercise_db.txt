@@ -1,0 +1,14 @@
+Nome:Gabriel dos Santos Vieira		Dre:114029198
+Nome:Mateus ildefonso do Nascimento	Dre:114073032
+
+Data: 30/06/16
+
+Exercicio 8:
+select Pnome,Unome from funcionario as F, trabalha_em as T where F.cpf = T.fcpf and T.pnr = all ( select projnumero from projeto where dnum = 5);
+
+Exercicio 12:
+select Pnome,Minicial,Unome from funcionario where salario > all(select salario from funcionario where dnr = 5);
+
+Exercicio 13:
+select Pnome,Minicial,Unome from funcionario where cpf = some (select fcpf from dependente where parentesco like "filh%") ;
+
