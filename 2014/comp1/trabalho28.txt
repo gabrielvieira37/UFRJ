@@ -1,0 +1,90 @@
+ 1-
+
+int vet[50],a,i;
+    for(i=0;i<10;i++)
+    {
+        scanf("%d",&a);
+        if(a%2!=0)
+        {
+            a=a*-1;
+
+        }
+        vet[i]=a;
+    }
+    for(i=0;i<10;i++)
+        {
+            printf("%d\n",vet[i]);
+        }
+}
+
+2-  int vet[50],a,i,b=0;
+    float media;
+    for(i=0;i<10;i++)
+    {
+        scanf("%d",&a);
+        if(a>0)
+        {
+         media=media+a;
+         b++;
+        }
+
+    }
+    media=media/b;
+    printf("%f\n",media);
+
+
+3-
+
+  int vet[50],a,i,b=0;
+    for(i=0;i<10;i++)
+    {
+        scanf("%d",&a);
+        vet[9-i]=a;
+    }
+    for(i=0;i<10;i++)
+    {
+        printf("%d",vet[i]);
+    }
+
+4-
+
+int vet[50],a,i,b=1,menor;
+    for(i=0;i<10;i++)
+    {
+        scanf("%d",&a);
+        vet[i]=a;
+    }
+    menor=vet[0];
+    for(i=0;i<10;i++)
+    {
+        if(vet[i]<menor)
+            menor=vet[i];
+    }
+5-
+
+ int vet[50],a,aux,g,i;
+    for(i=0;i<10;i++)
+    {
+        scanf("%d",&a);
+        vet[i]=a;
+    }
+    for(i=0;i<=9;i++)
+    {
+        for(g=i+1;g<=9;g++)
+        {
+            if(vet[i]>vet[g])
+            {
+                aux=vet[i];
+                vet[i]=vet[g];
+                vet[g]=aux;
+            }
+        }
+    }
+    for(i=0;i<10;i++)
+    {
+        printf("\n%d",vet[i]);
+    }
+
+
+
+

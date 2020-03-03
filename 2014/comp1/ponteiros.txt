@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void le(int** vetor){
+    int i,j;
+    for(i=0; i<3; i++)
+        for(j=0; j<3; j++)
+            scanf("%d", (*(vetor+i)+j));
+}
+
+void imprime(int** vetor){
+    int i,j;
+    printf("\n");
+    for(i=0; i<3; i++){
+        for(j=0; j<3; j++)
+            printf("%d\t", *(*(vetor+i)+j)); //vetor[i][j]
+        printf("\n");
+    }
+}
+
+void questao1(int** vetor){
+    int i,j;
+    printf("\n");
+    for(i=0; i<3; i++){
+        for(j=i; j<3; j++)
+            printf("%d\t", *(*(vetor+i)+j)); //vetor[i][j]
+        printf("\n");
+    }
+}
+
+void questao2(int** vetor){
+    int i,j;
+    printf("\n");
+    for(j=0; j<3; j++){
+        for(i=0; i<3; i++)
+            printf("%d\t", *(*(vetor+i)+j)); //vetor[i][j]
+        printf("\n");
+    }
+}
+
+void questao3(int** vetor){
+    int i,j;
+    int caralin=1;
+    printf("\n");
+    for(i=1; i<3; i++){
+        for(j=0; j<i; j++){
+            if(*(*(vetor+i)+j)!=0)
+                caralin=0;
+        }
+    }
+    printf("%d", caralin);
+}
+
+void questao4(int** vetor){
+    int i,j;
+    int caralin=1;
+    printf("\n");
+    for(j=1; j<3; j++){
+        for(i=0; i<j; i++){
+            if(*(*(vetor+i)+j)!=0)
+                caralin=0;
+        }
+    }
+    printf("%d", caralin);
+}
+
+void questao5(int** vetor){
+    questao3(vetor);
+    questao4(vetor);
+}
+
+void main()
+{
+    int **vetor;
+    int i,j,x;
+
+    vetor = (int**)malloc(3*sizeof(int*));
+    for(i=0; i<3; i++)
+        *(vetor+i) = (int*)malloc(3*sizeof(int));
+
+    le(vetor);
+    questao4(vetor);
+}
