@@ -1,0 +1,51 @@
+def gerachaves(p,q):
+	n=p*q
+	chavp=[]
+	chavs=[]
+	o=(p-1)*(q-1)
+	e=3
+	while(mdc(o,e)!=1):
+		e=e+1
+	d=mdcEstendido(e,o)
+	chavp.append(n)
+	chavp.append(e)
+	chavs.append(n)
+	chavs.append(d)
+	return chavp,chavs
+
+
+def rsa(n,r,L=[]):
+	P=L
+	for i in range (0,len(L)):
+		P[i]=pow(L[i],r,n)
+	return P
+
+
+def precode(n,M):
+	t=0
+	for i in range(0,len(M)):
+		t=t+ord(M[i])*pow(100,i)
+	k=int(math.log10(n))
+	L=[]
+	while (t>0):
+		q=t/pow(10,k)
+		L.append(t%pow(10,k))
+		t=q
+	return L
+
+def unprecode(n,L):
+	k=int(math.log10(n))
+	S=[]
+	t=0
+	b=pow(10,k)
+	for i in range(0,len(L)):
+		t=t+L[i]*pow(b,i)
+	print t
+	while (t>0):
+		q=t/100
+		S.append(chr(t%100))
+		t=q
+	return S
+
+
+

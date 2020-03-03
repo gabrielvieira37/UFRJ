@@ -1,0 +1,45 @@
+for(i=0;i<256;i++)
+    {
+        printf("%c %d \t",i,i);
+    }
+
+
+
+    gets(frase);
+    int tamanho = strlen(frase);
+
+    for(i=0;i<=tamanho+1;i++)
+    {
+        printf("_");
+    }
+    printf("\n%c",179);
+    printf("%s%c",frase,179);
+    printf("\n");
+    for(i=0;i<=tamanho+1;i++)
+    {
+        printf("%c",196);
+    }
+
+
+
+int tamanho = strlen(frase);
+
+    for(i=0;i<tamanho;i++)
+    {
+        if(frase[i] == ' ')
+        {
+            cont++;
+        }
+    }
+    printf("%d",cont);
+
+
+
+for(i=0;i<tamanho;i++)
+    {
+        putchar(frase[i]);
+        if(frase[i] == ' ')
+        {
+            printf("\n");
+        }
+    }
