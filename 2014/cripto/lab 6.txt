@@ -1,0 +1,27 @@
+def fraco(p,b):
+	if(pow(b,p-1,p)==1):
+		return False
+	else:
+		return True
+
+
+
+def F(k):
+	r = 2**(2**(k)) + 1
+	i=2
+	while i<r-1:
+		if fraco(r,i) == False:
+			i+=1
+		else:
+			return i,fraco(r,i)
+
+
+
+
+def fraco(p,b):
+	if(b%p==0):
+		return False
+	if(pow(b,p-1,p)==1):
+		return False
+	else:
+		return True                                                                                                                                              
